@@ -77,7 +77,7 @@ Use any or all of the following methods to optimize your model:
   * Add more hidden layers.
   * Use different activation functions for the hidden layers.
   * Add or reduce the number of epochs to the training regimen.
-  * 
+    
 Note: If you make at least three attempts at optimizing your model, you will not lose points if your model does not achieve target performance.
 
 1. Create a new Google Colab file and name it AlphabetSoupCharity_Optimization.ipynb.
