@@ -1,37 +1,37 @@
 ## Overview of the Analysis
 
-The purpose of this analysis was to use supervised machine learning models to predict loan risk based on a variety of factors. The training data for the model was a dataset of historical lending activity from a peer-to-peer lending services, which included the following categories:
+The purpose of this analysis was to use a neural network model to predict whether applicants will be funded by nonprofit foundation Alphabet Soup based on a variety of factors. The training data for the model was a dataset of more than 34,000 organizations that have received funding over the years, which included the following categories:
 
-* Loan size
-* Interest rate
-* Borrower income
-* Debt to income ratio
-* Number of accounts
-* Derogatory marks
-* Total debt
+* APPLICATION_TYPE: Alphabet Soup application type
+* AFFILIATION: Affiliated sector of industry
+* CLASSIFICATION: Government organization classification
+* USE_CASE: Use case for funding
+* ORGANIZATION: Organization type
+* STATUS: Active status
+* INCOME_AMT: Income classification
+* SPECIAL_CONSIDERATIONS: Special considerations for application
+* ASK_AMT: Funding amount requested
 
-Using these data points, in addition to whether these loans were healthy or in risk of defaulting, the machine learning models were trained to predict whether future applicants were likely to have healthy or high-risk loans. 
+Using these data points, in addition to whether the organizations received funding or not, the neural network models were trained to predict whether future applicants were likely to receive funding. 
 
-To complete the analysis, a logistic regression model was used on the historical data. First the model was trained on a subset of the data, and then the accuracy of the model was tested on another subset of the data. The precision and recall rates for the model were evaluated to determine whether it can reliably be used for screening new loan applicants.
-
-Because the dataset is imbalanced, with about 75,000 samples with a healthy designation and only 2,500 with a high-risk designation, a second logistic regression model was trained using randomly oversampled data from the dataset. This method picks samples at random with replacement, so that the number of samples in each category is no longer imbalanced. The same metrics were evaluated on this second logistic regression model and compared to those from the first.
+To complete the analysis, the data was first preprocessed, including binning some values to reduce unwanted effects from outliers and removing unnecessary columns such as name and EIN. Next, the numeric data was scaled, non-numeric data was encoded, and the data was split up into a subset for training the model and a subset for testing the model. Finally, a neural network model was built and then tested and evaluated for accuracy. Attempts to optimize the model included dropping additional columns, adding more bins, and adding layers to the neural network. 
 
 ## Results
 
-Machine Learning Model 1
-* Balanced accuracy: 95%
-* Precision: 100% for healthy loans; 85% for high-risk loans
-* Recall: 99% for healthy loans; 91% for high-risk loans
-* F1 score: 100% for healthy loans; 88% for high-risk loans
+Data Preprocessing
+* The target variable for the model was the column denoting whether the organization's application was funded or not.
+* The feature variables were application type, affiliation, classification, use case, organization type, status, income amount, special considerations, and ask amount.
+* The variables that were removed were name and EIN.
 
-Machine Learning Model 2 (random oversampling)
-* Balanced accuracy: 99%
-* Precision: 100% for healthy loans; 84% for high-risk loans
-* Recall: 99% for healthy loans; 99% for high-risk loans
-* F1 score: 100% for healthy loans; 91% for high-risk loans
+Compiling, Training, and Evaluating the Model
+* As a starting point for the neural network, 3 layers were used, with 100, 50, and 1 neurons, respectively. The first layer used a relu activation and the output layer used a sigmoid function, which are considered best practices. The second layer used an elu function. 100 epochs were used.
+* The accuracy of the first iteration of the model was about 72.8%. While this is generally considered good, attempts were made to optimize the model further with a goal of 75% or greater accuracy.
+* Several steps were taken to attempt to increase the accuracy of the model:
+  * An additional data column (status) was dropped, as a vast majority of the applications fell into one of two categories.
+  * The ask amounts were binned to try to account for outliers.
+  * The bin amounts for application type and classification type were adjusted slightly to create additional bins.
+  * More layers and neurons were added to the neural network model, including dropout layers and additional activation types (sigmoid and tanh). Unfortunately, the accuracy of the model did not increase. 
 
 ## Summary
 
-Considering the increased balanced accuracy, recall, and F1 score for the high-risk loans categorization when using the random oversampling method (Machine Learning Model 2), it is recommended to use this model for predicting creditworthiness of borrowers. The second model is considerably better at correctly identifying high-risk loans (reflected in high recall score). 
-
-It's most important to correctly identify healthy loans, in order to bring in as much business as possible. It would be problematic to be denying loans to borrowers who would be able to pay them back with no issues. Because of this, the slightly less accurate identification of high-risk loans (though still quite accurate) is an acceptable risk to take. 
+An accuracy rate of approximately 72% is generally considered to be a good model, as it is over 70%. However, other models could be used to see if a greater accuracy can be achieved. A random forest model may be a better option in this case, as random forests are less prone to overfitting than neural networks. 
